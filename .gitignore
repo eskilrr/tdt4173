@@ -1,0 +1,9 @@
+# Jetbrain-shit
+.idea/
+*.iws
+*.iml
+
+# virtualenv
+venv/
+ENV/
+hybenv/
