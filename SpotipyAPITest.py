@@ -17,14 +17,14 @@ def getTrackIDs(user, playlist_id):
 
 def getAllArtistsFollowersFromTrack(track_id):
     meta = sp.track(track_id)
-    artists = [item['id'] for item in meta['artists']]
+    artists = [artist['id'] for artist in meta['artists']]
     followers = 0
     popularities = []
     for artist in artists:
         features = getArtistFeaturesFromArtist(artist)
         popularities.append(features[0])
         followers += features[1]
-    return [popularities, followers]
+    return [max(popularities), followers]
 
 
 def getArtistFeaturesFromArtist(artist_id):
@@ -69,7 +69,6 @@ def getDataFromTracklist(tracklist):
     return pd.DataFrame.from_dict(feature_dict)
 
 #Printing features in global top 50
-track_ids = getTrackIDs('ingebosse', '37i9dQZEVXbMDoHDwVN2tF')
-tracklist = [getTrackFeatures(track_id) for track_id in track_ids]
-df = getDataFromTracklist(tracklist)
-
+#track_ids = getTrackIDs('ingebosse', '37i9dQZEVXbMDoHDwVN2tF')
+#tracklist = [getTrackFeatures(track_id) for track_id in track_ids]
+#df = getDataFromTracklist(tracklist)
