@@ -15,16 +15,46 @@ def getTrackIDs(user, playlist_id):
         ids.append(track['id'])
     return ids
 
-def getAllArtistsFollowersFromTrack(track_id):
+def getKey(track_id):
+    features = sp.audio_features(track_id)
+    return [features[0]['key']]
+
+def getExtraFeaturesFromTrack(track_id):
     meta = sp.track(track_id)
     artists = [artist['id'] for artist in meta['artists']]
+    duration_ms = meta['duration_ms']
+    popularity = meta['popularity']
+    release_date = meta['album']['release_date']
     followers = 0
     popularities = []
     for artist in artists:
         features = getArtistFeaturesFromArtist(artist)
         popularities.append(features[0])
         followers += features[1]
-    return [max(popularities), followers]
+    return ["", duration_ms, popularity, release_date, 0, max(popularities), followers, len(artists), artists]
+
+def getAllArtistsFollowersFromTrack(track_id):
+    meta = sp.track(track_id)
+    audio_analysis = {'sections': [1]}
+    while True:
+        try:
+            audio_analysis = sp.audio_analysis(track_id)
+            break
+        except spotipy.SpotifyException as e:
+            print(e)
+            break
+        except Exception as e:
+            continue
+    artists = [artist['id'] for artist in meta['artists']]
+    duration_ms = meta['duration_ms']
+    sections = len(audio_analysis['sections'])
+    followers = 0
+    popularities = []
+    for artist in artists:
+        features = getArtistFeaturesFromArtist(artist)
+        popularities.append(features[0])
+        followers += features[1]
+    return [duration_ms, sections, max(popularities), followers, len(artists), artists]
 
 
 def getArtistFeaturesFromArtist(artist_id):
@@ -60,14 +90,14 @@ def getTrackFeatures(track_id):
              loudness, speechiness, tempo, time_signature]
     return track
 
-def getDataFromTracklist(tracklist):
+'''def getDataFromTracklist(tracklist):
     features = ["name", "artist_popularity", "artist_followers", "release_date", "length", "popularity",
              "danceability", "acousticness", "danceability", "energy", "instrumentalness", "liveness",
              "loudness", "speechiness", "tempo", "time_signature"]
     transposed_tracklist = list(map(list, zip(*tracklist)))
     feature_dict = dict(zip(features, transposed_tracklist))
     return pd.DataFrame.from_dict(feature_dict)
-
+'''
 #Printing features in global top 50
 #track_ids = getTrackIDs('ingebosse', '37i9dQZEVXbMDoHDwVN2tF')
 #tracklist = [getTrackFeatures(track_id) for track_id in track_ids]
