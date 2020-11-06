@@ -16,7 +16,13 @@ def getTrackIDs(user, playlist_id):
     return ids
 
 def getKey(track_id):
-    features = sp.audio_features(track_id)
+    features = []
+    while True:
+        try:
+            features = sp.audio_features(track_id)
+            break
+        except Exception as e:
+            continue
     return [features[0]['key']]
 
 def getExtraFeaturesFromTrack(track_id):

@@ -1,41 +1,52 @@
 import pandas as pd
-
+import ast
 '''If artist of flop song is listed as one of the artists of a billboard song,
 the 'weeks' feature of the flop songs should be the latest recorded number of weeks this artist
 had on billboard up to the date of the release of the flop song'''
 
-flops = pd.read_csv("CSV-files/flopdata-v1.csv")
-billboard = pd.read_csv("CSV-files/billboard-spotify-data-org.csv")
+flops = pd.read_csv("CSV-files/OLD_FILES/flopdata-v3.csv")
+billboard = pd.read_csv("CSV-files/OLD_FILES/billboard-spotify-data-org.csv", sep=";")
 
 flops['release_date'] = pd.to_datetime(flops['release_date'], format='%Y-%m-%d').dt.date
 flops = flops.sort_values(by=['weeks'], ascending=False)
+flops = flops.reset_index(drop=True)
 
-billboard['release_date'] = pd.to_datetime(billboard['release_date'], format='%Y-%m-%d').dt.date
+for i, row in billboard.iterrows():
+    if len(row['release_date'])==4:
+        #print(row['release_date'])
+        billboard.at[i, 'release_date'] = "0101" + row['release_date']
+        continue
+    billboard.at[i, 'release_date'] = row['release_date'].replace(".", "")
+billboard['release_date'] = pd.to_datetime(billboard['release_date'], format='%d%m%Y').dt.date
 billboard = billboard.sort_values(by=['release_date'], ascending=False)
+billboard = billboard.reset_index(drop=True)
 
 #Update index here
 #flops.insert(9, "Weeks")
 count = 0
 for x, flop in flops.iterrows():
+    count += 1
+    if count%100==0:
+        print(count)
     weeks = [0]
     for y, hit in billboard.iterrows():
+        #print(y, hit['release_date'])
         #Continue looping if date of flop is older than hit release date
         if flop['release_date'] < hit['release_date']:
+            #print(flop['release_date'], hit['release_date'])
             continue
-        #Continue looping if artist does not match
-        if flop['artists'] != hit['artists']:
-
 
         #Set all number of weeks for
-        for flop_artist in flop['artists']:
-            for hit_artist in hit['artists']:
-                if(flop_artist==hit_artist):
+        fa = ast.literal_eval(flop['list_of_artists'])
+        #print(fa)
+        for flop_artist in fa:
+            ha = ast.literal_eval(hit['list_of_artists'])
+            for hit_artist in ha:
+                if flop_artist == hit_artist:
+                    print(flop_artist, hit_artist, hit['weeks'])
                     weeks.append(hit['weeks'])
-        flop['weeks']=max(weeks)
+    flops.at[x, 'weeks'] = max(weeks)
+    #print(flops.at[x, 'weeks'])
 
-
-        #print('Index:', x)
-        print(flop['release_date'], flop['name'], flop['artist'])
-        count += 1
-        if count==100:
-            break
+flops.to_csv("CSV-files/flopdata-weeks.csv", index=False, header=True)
+print(flops['weeks'])
