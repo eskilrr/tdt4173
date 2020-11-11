@@ -41,6 +41,23 @@ def getExtraFeaturesFromTrack(track_id):
 
 def getAllArtistsFollowersFromTrack(track_id):
     meta = sp.track(track_id)
+    artists = [artist['id'] for artist in meta['artists']]
+    followers = 0
+    popularities = []
+    for artist in artists:
+        features = getArtistFeaturesFromArtist(artist)
+        popularities.append(features[0])
+        followers += features[1]
+    return [max(popularities), followers, len(artists), artists]
+
+
+def getArtistFeaturesFromArtist(artist_id):
+    meta = sp.artist(artist_id)
+    return [meta['popularity'], meta['followers']['total']]
+
+def getTrackFeatures(track_id):
+    meta = sp.track(track_id)
+    features = sp.audio_features(track_id)
     audio_analysis = {'sections': [1]}
     while True:
         try:
@@ -51,34 +68,16 @@ def getAllArtistsFollowersFromTrack(track_id):
             break
         except Exception as e:
             continue
-    artists = [artist['id'] for artist in meta['artists']]
-    duration_ms = meta['duration_ms']
-    sections = len(audio_analysis['sections'])
-    followers = 0
-    popularities = []
-    for artist in artists:
-        features = getArtistFeaturesFromArtist(artist)
-        popularities.append(features[0])
-        followers += features[1]
-    return [duration_ms, sections, max(popularities), followers, len(artists), artists]
-
-
-def getArtistFeaturesFromArtist(artist_id):
-    meta = sp.artist(artist_id)
-    return [meta['popularity'], meta['followers']['total']]
-
-def getTrackFeatures(track_id):
-    meta = sp.track(track_id)
-    features = sp.audio_features(track_id)
-
     # meta
     name = meta['name']
+    artist_name = meta['album']['artists'][0]['name']
     release_date = meta['album']['release_date']
-    length = meta['duration_ms']
     popularity = meta['popularity']
     artists_features = getAllArtistsFollowersFromTrack(track_id)
     artist_popularity = artists_features[0]
     artist_followers = artists_features[1]
+    number_of_artists = artists_features[2]
+    list_of_artists = artists_features[3]
 
     # features
     acousticness = features[0]['acousticness']
@@ -90,11 +89,20 @@ def getTrackFeatures(track_id):
     speechiness = features[0]['speechiness']
     tempo = features[0]['tempo']
     time_signature = features[0]['time_signature']
+    key = features[0]['key']
+    mode = features[0]['mode']
+    valence = features[0]['valence']
+    duration_ms = meta['duration_ms']
 
-    track = [name, artist_popularity, artist_followers, release_date, length, popularity,
-             danceability, acousticness, danceability, energy, instrumentalness, liveness,
-             loudness, speechiness, tempo, time_signature]
+    sections = len(audio_analysis['sections'])
+
+    track = [name, artist_name, track_id, danceability, energy, loudness, mode,
+             speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, time_signature,
+             sections, 0, "", popularity, release_date, 0, artist_popularity, artist_followers, number_of_artists,
+             list_of_artists, key]
     return track
+
+
 
 '''def getDataFromTracklist(tracklist):
     features = ["name", "artist_popularity", "artist_followers", "release_date", "length", "popularity",
