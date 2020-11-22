@@ -1,8 +1,7 @@
 import spotipy
 import pandas as pd
-import SpotipyAPITest as spot
+from Data import SpotipyAPITest as spot
 import os
-import ast
 from spotipy.oauth2 import SpotifyClientCredentials
 os.environ['SPOTIPY_CLIENT_ID'] = '0352b9dc8c1b44f69aeee6cae24f0f53'
 os.environ['SPOTIPY_CLIENT_SECRET'] = 'c4003dba4d564ccaaaa23c1044f34b92'

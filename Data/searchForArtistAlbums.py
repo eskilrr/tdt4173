@@ -1,6 +1,4 @@
 import spotipy
-import pandas as pd
-import SpotipyAPITest as spot
 import os
 import datetime
 from spotipy.oauth2 import SpotifyClientCredentials

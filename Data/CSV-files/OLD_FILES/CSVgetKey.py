@@ -1,4 +1,4 @@
-import SpotipyAPITest as sp
+from Data import SpotipyAPITest as sp
 from csv import reader
 from csv import writer
 from pathlib import Path

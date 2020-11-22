@@ -3,7 +3,7 @@ from datetime import datetime
 import spotipy
 import billboard
 import re
-import SpotipyAPITest as spot
+from Data import SpotipyAPITest as spot
 from pathlib import Path
 #from sklearn.ensemble import RandomForestClassifier
 #from sklearn.model_selection import train_test_split

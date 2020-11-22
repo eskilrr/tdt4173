@@ -1,7 +1,4 @@
-import spotipy
 import pandas as pd
-import SpotipyAPITest as spot
-import os
 import ast
 writeFile = "billboard-hits-2000-2020v2.csv"
 #Get unique artists in list from billboard

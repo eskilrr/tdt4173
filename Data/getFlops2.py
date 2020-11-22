@@ -1,6 +1,6 @@
 import spotipy
 import pandas as pd
-import SpotipyAPITest as spot
+from Data import SpotipyAPITest as spot
 import os
 import Data.searchForArtistAlbums as sa
 from spotipy.oauth2 import SpotifyClientCredentials
