@@ -9,13 +9,13 @@ os.environ['SPOTIPY_CLIENT_SECRET'] = 'c4003dba4d564ccaaaa23c1044f34b92'
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials())
 
 # Set ipython's max row display
-pd.set_option('display.max_row', 1000)
+#pd.set_option('display.max_row', 1000)
 
 '''Searching for all individual artists from billboard dataset
  and getting more of their songs released after 2020 if it is not the billboard dataset'''
 
 def getTracksFromArtistName(artist, offset_factor):
-    results = sp.search(q="artist:" + artist + " year:2000-2020 NOT Remix NOT Live", limit=50, offset=50*offset_factor)
+    results = sp.search(q="artist:" + artist + " year:2000-2020 NOT Remix NOT Live NOT Acoustic", limit=50, offset=50*offset_factor)
     items = results["tracks"]["items"]
     id = "NONE"
     if (len(items) > 0):
