@@ -2,16 +2,16 @@ import pandas as pd
 '''If artist of flop song is listed as one of the artists of a billboard song,
 the 'weeks' feature of the flop songs should be the latest recorded number of weeks this artist
 had on billboard up to the date of the release of the flop song'''
-
+'''
 flops = pd.read_csv("flops112320.csv")
 billboard = pd.read_csv("billboard.csv")
-'''
+
 for i, row in billboard.iterrows():
     if len(row['release_date'])==4:
         #print(row['release_date'])
         billboard.at[i, 'release_date'] = row['release_date'] + "-01-01"
         continue
-'''
+
 print(str(len(billboard)))
 billboard['release_date'] = pd.to_datetime(billboard['release_date'], format='%Y-%m-%d').dt.date
 billboard['release_year'] = pd.to_datetime(billboard['release_date']).dt.year
@@ -25,7 +25,7 @@ flops['release_date'] = pd.to_datetime(flops['release_date'], format='%Y-%m-%d')
 flops = flops.sort_values(by=['release_date'], ascending=False)
 flops = flops.reset_index(drop=True)
 flops['release_year'] = pd.to_datetime(flops['release_date']).dt.year
-'''
+
 #Update index hered
 count = 0
 for x, flop in flops.iterrows():
@@ -55,7 +55,11 @@ new_df2 = pd.DataFrame(columns=["name", "artist", "song_id", "danceability", "en
                                                              "weeks", "artist_popularity", "artist_followers",
                                                              "number_of_artists", "list_of_artists", "key", "artist_id",
                                                         "lead_artist_name", "release_year", "chart_year"])
-
+allRecs = pd.read_csv("allFlops.csv")
+allRecs['release_date'] = pd.to_datetime(allRecs['release_date'], format='%Y-%m-%d').dt.date
+allRecs['release_year'] = pd.to_datetime(allRecs['release_date']).dt.year
+billboard = allRecs[allRecs['target'] == 1]
+flops = allRecs[allRecs['target'] == 0]
 for i in range(21):
     print("Year: ", i, str(len(billboard[billboard['release_year'] == 2000 + i])))
 
