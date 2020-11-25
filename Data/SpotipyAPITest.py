@@ -70,6 +70,8 @@ def getTrackFeatures(track_id):
             name = meta['name']
             artist_name = meta['album']['artists'][0]['name']
             release_date = meta['album']['release_date']
+            if len(release_date) == 4:
+                release_date = release_date + "-01-01"
             popularity = meta['popularity']
             artists_features = getAllArtistsFollowersFromTrack(track_id)
             artist_popularity = artists_features[0]
