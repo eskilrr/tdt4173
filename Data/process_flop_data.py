@@ -5,13 +5,13 @@ had on billboard up to the date of the release of the flop song'''
 
 flops = pd.read_csv("flops112320.csv")
 billboard = pd.read_csv("billboard.csv")
-
+'''
 for i, row in billboard.iterrows():
     if len(row['release_date'])==4:
         #print(row['release_date'])
         billboard.at[i, 'release_date'] = row['release_date'] + "-01-01"
         continue
-
+'''
 print(str(len(billboard)))
 billboard['release_date'] = pd.to_datetime(billboard['release_date'], format='%Y-%m-%d').dt.date
 billboard['release_year'] = pd.to_datetime(billboard['release_date']).dt.year
@@ -25,7 +25,7 @@ flops['release_date'] = pd.to_datetime(flops['release_date'], format='%Y-%m-%d')
 flops = flops.sort_values(by=['release_date'], ascending=False)
 flops = flops.reset_index(drop=True)
 flops['release_year'] = pd.to_datetime(flops['release_date']).dt.year
-
+'''
 #Update index hered
 count = 0
 for x, flop in flops.iterrows():
@@ -46,8 +46,8 @@ for x, flop in flops.iterrows():
     #flops.at[x, 'weeks'] = max(weeks)
 
 flops.to_csv("flops112320_weeks.csv", index=False, header=True)
-
-new_df = pd.DataFrame(columns=["name", "artist", "song_id", "danceability", "energy",
+'''
+new_df2 = pd.DataFrame(columns=["name", "artist", "song_id", "danceability", "energy",
                                                              "loudness", "mode", "speechiness", "acousticness",
                                                              "instrumentalness", "liveness", "valence", "tempo",
                                                              "duration_ms", "time_signature", "sections",
@@ -66,8 +66,8 @@ for i in range(21):
     print(n_hits, n_flops)
     smallest_n = min(n_hits, n_flops)
     print(smallest_n)
-    new_df = new_df.append(billboard[billboard['release_year'] == 2000 + i].sample(n=smallest_n, random_state=1))
-    new_df = new_df.append(flops[flops['release_year'] == 2000 + i].sample(n=smallest_n, random_state=1))
+    new_df2 = new_df2.append(billboard[billboard['release_year'] == 2000 + i].sample(n=smallest_n, random_state=1))
+    new_df2 = new_df2.append(flops[flops['release_year'] == 2000 + i].sample(n=smallest_n, random_state=1))
 
-print(str(len(new_df)))
-new_df.to_csv("new_df.csv", index=False, header=True)
+print(str(len(new_df2)))
+new_df2.to_csv("new_df2.csv", index=False, header=True)
