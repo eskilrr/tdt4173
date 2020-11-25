@@ -15,7 +15,10 @@ def getArtistAlbums(artist_id, aNumber, o):
     return [album_ids, album_names]
 
 def albumReleasedAfter2000(album_id):
-    release_year = sp.album(album_id)['release_date'].split("-")[0]
+    try:
+        release_year = sp.album(album_id)['release_date'].split("-")[0]
+    except:
+        return False
     if int(release_year) > 2000:
         return True
     else:
