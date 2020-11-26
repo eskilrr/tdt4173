@@ -33,7 +33,7 @@ This repository consists of two folders: Data and Notebook.
 This folder contains all data and most of the preprocessing. 
 - The clean folder contains the preprocessed test and train data.
 - The processed folder contains a script that balances hits and flops per year.
-- This folder contains all scripts needed to fetch the raw data from billboard and spotify
+- The raw folder contains all scripts needed to fetch the raw data from billboard and spotify
 
 ### Notebook
 This folder contains the models used for our project. Also, there is a folder called further preprocessing. This folder consists of a script for some further preprocessing as well as the plots used for our report.
