@@ -27,3 +27,13 @@ cover and non-original versions, or if the artist does not exist on the platform
 dataset, sampling songs from the catalogue of the artist since January 2000 that does not exists in the hit dataset. 
 The flop dataset consists of 37 000 songs.
 
+## Folder structure
+This repository consists of two folders: Data and Notebook.
+### Data
+This folder contains all data and most of the preprocessing. 
+- The clean folder contains the preprocessed test and train data.
+- The processed folder contains a script that balances hits and flops per year.
+- This folder contains all scripts needed to fetch the raw data from billboard and spotify
+
+### Notebook
+This folder contains the models used for our project. Also, there is a folder called further preprocessing. This folder consists of a script for some further preprocessing as well as the plots used for our report.
