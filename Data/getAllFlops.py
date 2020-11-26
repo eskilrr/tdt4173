@@ -58,7 +58,7 @@ df2['length'] = df2['song_ids'].str.len()
 df2.to_csv("artist_dataframe2.csv", index=False, header=True, columns=["artist", "artist_id", "song_ids", "song_names", "length",
                                                                   "weeksdates"])
 #df2 = pd.read_csv("artist_dataframe.csv")
-df2 = df2.iloc[484:] #start from specific artist
+df2 = df2.iloc[817:] #start from specific artist
 #df2['length'] = df2['song_ids'].str.len() #WRONG
 df = pd.read_csv("allFlops.csv") #read allFlops as df from last saved state
 
